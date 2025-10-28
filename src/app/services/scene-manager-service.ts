@@ -7,14 +7,14 @@ export type shape = {
   id: number,
   name: string,
   size: number,
-  color: string,
+  color: THREE.Color,
   position: { x: number, y: number, z: number }
 }
 @Injectable({
   providedIn: 'root'
 })
 export class SceneManagerService {
-  
+
   scene !: THREE.Scene;
   renderer !: THREE.WebGLRenderer;
   camera !: THREE.Camera;
@@ -26,11 +26,11 @@ export class SceneManagerService {
   nameIndex: number = 0;
 
   private previousSelectedMesh: THREE.Mesh | null = null;
-  previousOriginalColor : THREE.Color = new THREE.Color(0,0,0);
+  previousOriginalColor: THREE.Color = new THREE.Color(0, 0, 0);
 
-  editShape(id : number ,name: string , posX : number , posY : number , posZ : number) {
+  editShape(id: number, name: string, posX: number, posY: number, posZ: number, scale: number, color: any) {
     this.selectedShape = this.inSceneShapes.find(item => item.id == id);
-    if(!this.selectedShape) return;
+    if (!this.selectedShape) return;
     this.selectedShape.position.x = posX;
     this.selectedShape.position.y = posY;
     this.selectedShape.position.z = posZ;
@@ -40,6 +40,9 @@ export class SceneManagerService {
     mesh.position.y = this.selectedShape.position.y;
     mesh.position.z = this.selectedShape.position.z;
 
+    (mesh.material as THREE.MeshStandardMaterial).color.set(color);
+    this.selectedShape.color = color;
+    mesh.scale.set(scale, scale, scale);
 
 
     this.selectedShape.name = name;
@@ -68,9 +71,9 @@ export class SceneManagerService {
 
     }
 
-    
 
-    this.inSceneShapes.push({ id: this.nameIndex, name: 'cube' + this.nameIndex, size: 2, color: 'red', position: { x: this.xOffset, y: 0, z: 0 } });
+
+    this.inSceneShapes.push({ id: this.nameIndex, name: 'cube' + this.nameIndex, size: 2, color: new THREE.Color(255, 0, 0), position: { x: this.xOffset, y: 0, z: 0 } });
     (this.xOffset >= 0) ? this.xOffset = -1 * this.xOffset - 5 : this.xOffset = -1 * this.xOffset;
 
     //change camera perspective if too many shapes 
@@ -105,22 +108,27 @@ export class SceneManagerService {
   }
   selectShape(id: number) {
     this.selectedShape = this.inSceneShapes.find(item => item.id == id);
-    
-    if(this.selectedShape ){
-      
+    if (this.selectedShape) {
+
       const mesh = this.scene.getObjectByName(this.selectedShape.name) as THREE.Mesh;
-      if(!this.previousSelectedMesh){
+      console.log(mesh);
+
+      if (!this.previousSelectedMesh) {
         this.previousSelectedMesh = mesh;
         console.log(this.previousSelectedMesh);
 
-      }else{
-        (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255,0,0));
+      } else {
+        const priviousShape = this.inSceneShapes.find(item => item.name == this.previousSelectedMesh?.name);
+        if (priviousShape) {
+          (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(priviousShape.color);
+
+        }
         this.previousSelectedMesh = mesh;
       }
 
       this.previousOriginalColor = (mesh.material as THREE.MeshStandardMaterial).color;
-      
-      (mesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255,234,171));
+
+      (mesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 234, 171));
     }
     console.log(this.inSceneShapes);
 
@@ -128,8 +136,8 @@ export class SceneManagerService {
   }
   deselectShape() {
     this.selectedShape = undefined;
-    if(this.previousSelectedMesh){
-        (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255,0,0));
+    if (this.previousSelectedMesh) {
+      (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 0, 0));
 
     }
   }
