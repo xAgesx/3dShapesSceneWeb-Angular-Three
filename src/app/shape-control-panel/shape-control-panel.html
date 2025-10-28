@@ -1,0 +1,11 @@
+
+<button (click)="addShape('cube');">add</button>
+<button (click)="getInSceneShapes();">Display Objects</button>
+<ul *ngIf="getInSceneShapes() != null">
+    <li *ngFor="let e of getInSceneShapes()" (click)="selectShape(e.id);" [ngClass]="{'is-selected':  selectedShape != undefined && selectedShape.id == e.id }">{{e.name}} ({{e.id}})
+    </li>
+    
+</ul>
+<div *ngIf="selectedShape">
+    <app-shape-details></app-shape-details>
+  </div>

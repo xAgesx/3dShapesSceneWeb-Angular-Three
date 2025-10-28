@@ -1,0 +1,40 @@
+<div class="editor-panel">
+  
+  <div class="header">
+    <h2>{{this.controlPanel.selectedShape?.name}} Details</h2>
+    <button class="close-btn" (click)="deselectShape()">&times;</button>
+  </div>
+
+  <div class="controls">
+    
+    <label>Name:</label>
+    <input type="text" value="{{this.controlPanel.selectedShape?.name}} " #name>
+
+    <label>Color:</label>
+    <input type="color" value="{{this.controlPanel.selectedShape?.color}}">
+
+    <label>Size:</label>
+    <input type="range" min="1" max="10" step="0.5" value="{{this.controlPanel.selectedShape?.size}}">
+    <span>3.5</span>
+
+    <hr>
+
+    <h3>Position (XYZ)</h3>
+    <div class="position-group">
+      
+      <label>X:</label>
+      <input #posX type="number" value="{{this.controlPanel.selectedShape?.position?.x}}" step="0.1">
+
+      <label>Y:</label>
+      <input #posY type="number" value="{{this.controlPanel.selectedShape?.position?.y}}" step="0.1">
+
+      <label>Z:</label>
+      <input #posZ type="number" value="{{this.controlPanel.selectedShape?.position?.z}}" s tep="0.1">
+    </div>
+    
+    <div class="actions">
+      <button class="update-btn" (click)="editShape(this.controlPanel.selectedShape?.id,name.value,+(posX.value),+(posY.value),+(posZ.value))">Apply Changes</button>
+      <button class="delete-btn">Delete</button>
+    </div>
+  </div>
+</div>
