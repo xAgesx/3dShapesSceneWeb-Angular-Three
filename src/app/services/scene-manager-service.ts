@@ -52,17 +52,36 @@ export class SceneManagerService {
   }
   addShape(type: string) {
     let mesh;
-
+    let geometry;
+    let material;
+    let typeShape : string | undefined = '' ;
+    let sizeShape : number | undefined = 2;
     switch (type) {
       case 'cube':
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        sizeShape =2;
+        typeShape = type;
+        geometry = new THREE.BoxGeometry(sizeShape, sizeShape, sizeShape);
+        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
         mesh = new THREE.Mesh(geometry, material);
-
         mesh.translateX(this.xOffset);
+        break;
 
+      case 'sphere':
+        sizeShape = 1.5;
+        typeShape = type;
+        geometry = new THREE.SphereGeometry(sizeShape);
+        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.translateX(this.xOffset);
+        break;
 
-
+      case 'cone':
+        sizeShape = 1.5;
+        typeShape = type;
+        geometry = new THREE.ConeGeometry(sizeShape);
+        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.translateX(this.xOffset);
         break;
 
     }
@@ -75,7 +94,7 @@ export class SceneManagerService {
 
 
 
-    this.inSceneShapes.push({ id: this.nameIndex, name: 'cube' + this.nameIndex, size: 2, color: new THREE.Color(255, 0, 0), position: { x: this.xOffset, y: 0, z: 0 } });
+    this.inSceneShapes.push({ id: this.nameIndex, name: typeShape + this.nameIndex, size: sizeShape, color: new THREE.Color(255, 0, 0), position: { x: this.xOffset, y: 0, z: 0 } });
     (this.xOffset >= 0) ? this.xOffset = -1 * this.xOffset - 5 : this.xOffset = -1 * this.xOffset;
 
     //change camera perspective if too many shapes 

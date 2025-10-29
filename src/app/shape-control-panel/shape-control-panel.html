@@ -1,6 +1,12 @@
+<div class="controls-wrapper">
+    <button (click)="addShape(type.value);">add</button>
+<select #type>
+    <option value="cube">cube</option>
+    <option value="sphere">sphere</option>
+    <option calue="cone">cone</option>
+</select>
+</div>
 
-<button (click)="addShape('cube');">add</button>
-<button (click)="getInSceneShapes();">Display Objects</button>
 <ul *ngIf="getInSceneShapes() != null">
     <li *ngFor="let e of getInSceneShapes()" (click)="selectShape(e.id);" [ngClass]="{'is-selected':  selectedShape != undefined && selectedShape.id == e.id }">{{e.name}} ({{e.id}})
     </li>
