@@ -26,5 +26,8 @@ export class ShapeDetails {
   deselectShape() {
     this.controlPanel.deselectShape();
   }
+  deleteShape(){
+    this.service.deleteShape();
+  }
 
 }

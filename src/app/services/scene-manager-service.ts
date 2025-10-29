@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
-import { SceneViewer } from '../scene-viewer/scene-viewer';
-import { abs } from 'three/tsl';
+
+
 
 export type shape = {
   id: number,
@@ -27,6 +27,8 @@ export class SceneManagerService {
 
   private previousSelectedMesh: THREE.Mesh | null = null;
   previousOriginalColor: THREE.Color = new THREE.Color(0, 0, 0);
+  
+ 
 
   editShape(id: number, name: string, posX: number, posY: number, posZ: number, scale: number, color: any) {
     this.selectedShape = this.inSceneShapes.find(item => item.id == id);
@@ -35,7 +37,7 @@ export class SceneManagerService {
     this.selectedShape.position.y = posY;
     this.selectedShape.position.z = posZ;
 
-    const mesh = this.scene.getObjectByName(this.selectedShape.name) as THREE.Mesh;
+    const mesh = this.scene.getObjectByName(id.toString()) as THREE.Mesh;
     mesh.position.x = this.selectedShape.position.x;
     mesh.position.y = this.selectedShape.position.y;
     mesh.position.z = this.selectedShape.position.z;
@@ -46,7 +48,7 @@ export class SceneManagerService {
 
 
     this.selectedShape.name = name;
-    mesh.name = name;
+    
   }
   addShape(type: string) {
     let mesh;
@@ -66,7 +68,7 @@ export class SceneManagerService {
     }
     if (mesh != null) {
       this.nameIndex++;
-      mesh.name = type + this.nameIndex;
+      mesh.name = this.nameIndex.toString();
       this.scene.add(mesh);
 
     }
@@ -110,15 +112,15 @@ export class SceneManagerService {
     this.selectedShape = this.inSceneShapes.find(item => item.id == id);
     if (this.selectedShape) {
 
-      const mesh = this.scene.getObjectByName(this.selectedShape.name) as THREE.Mesh;
+      const mesh = this.scene.getObjectByName(this.selectedShape.id.toString()) as THREE.Mesh;
       console.log(mesh);
 
       if (!this.previousSelectedMesh) {
         this.previousSelectedMesh = mesh;
-        console.log(this.previousSelectedMesh);
+        console.log("previous : " +this.previousSelectedMesh);
 
       } else {
-        const priviousShape = this.inSceneShapes.find(item => item.name == this.previousSelectedMesh?.name);
+        const priviousShape = this.inSceneShapes.find(item => item.id.toString() == this.previousSelectedMesh?.name);
         if (priviousShape) {
           (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(priviousShape.color);
 
@@ -130,7 +132,10 @@ export class SceneManagerService {
 
       (mesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 234, 171));
     }
+    console.log("previousShape : " +this.previousSelectedMesh);
+
     console.log(this.inSceneShapes);
+    console.log(this.scene.children);
 
 
   }
@@ -138,8 +143,22 @@ export class SceneManagerService {
     this.selectedShape = undefined;
     if (this.previousSelectedMesh) {
       (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 0, 0));
-
+      
     }
+    
+  }
+
+  deleteShape(){
+    const selectedObjectIndex = this.scene.children.findIndex(item => item.name == this.selectedShape?.id.toString());
+    if(selectedObjectIndex != -1){
+      //Remove from scene 
+      this.scene.children.splice(selectedObjectIndex,1);
+      //Remove from inSceneShapes
+      const index = this.inSceneShapes.findIndex(item => item.id == this.selectedShape?.id);
+      this.inSceneShapes.splice(index,1);
+    }
+
+    
   }
 
 }
