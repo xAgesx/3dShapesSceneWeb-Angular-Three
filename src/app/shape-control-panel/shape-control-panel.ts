@@ -13,6 +13,8 @@ import { ShapeDetails } from "../shape-details/shape-details";
 export class ShapeControlPanel {
 
   public selectedShape : shape | undefined = undefined;
+  public isCollapsed: boolean = false;
+
   constructor(private service : SceneManagerService){}
   
 
@@ -20,6 +22,9 @@ export class ShapeControlPanel {
     this.service.addShape(type);
     
   }
+  public toggleCollapse(): void {
+  this.isCollapsed = !this.isCollapsed;
+}
   selectShape(id : number){
       
       this.service.selectShape(id);

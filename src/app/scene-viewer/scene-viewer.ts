@@ -1,15 +1,12 @@
 import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
 import * as THREE from 'three';
-import { threshold } from 'three/src/nodes/TSL.js';
 import { ShapeControlPanel } from "../shape-control-panel/shape-control-panel";
 import { SceneManagerService } from '../services/scene-manager-service';
 import { ShapeDetails } from "../shape-details/shape-details";
-import { directPointLight } from 'three/tsl';
-import { rgbShift } from 'three/examples/jsm/tsl/display/RGBShiftNode.js';
 
 @Component({
   selector: 'app-scene-viewer',
-  imports: [ShapeControlPanel, ShapeDetails],
+  imports: [ShapeControlPanel],
   templateUrl: './scene-viewer.html',
   styleUrl: './scene-viewer.css',
 })

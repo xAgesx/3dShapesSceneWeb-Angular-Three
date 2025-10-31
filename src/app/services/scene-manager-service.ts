@@ -94,7 +94,7 @@ export class SceneManagerService {
 
 
 
-    this.inSceneShapes.push({ id: this.nameIndex, name: typeShape + this.nameIndex, size: sizeShape, color: new THREE.Color(255, 0, 0), position: { x: this.xOffset, y: 0, z: 0 } });
+    this.inSceneShapes.push({ id: this.nameIndex, name: typeShape + this.nameIndex, size: sizeShape,  color: new THREE.Color("rgb(255, 0, 0)") , position: { x: this.xOffset, y: 0, z: 0 } });
     (this.xOffset >= 0) ? this.xOffset = -1 * this.xOffset - 5 : this.xOffset = -1 * this.xOffset;
 
     //change camera perspective if too many shapes 
@@ -132,16 +132,17 @@ export class SceneManagerService {
     if (this.selectedShape) {
 
       const mesh = this.scene.getObjectByName(this.selectedShape.id.toString()) as THREE.Mesh;
-      console.log(mesh);
+      console.log('current mesh :'+mesh.material);
 
       if (!this.previousSelectedMesh) {
         this.previousSelectedMesh = mesh;
-        console.log("previous : " +this.previousSelectedMesh);
+        console.log("previous : " +this.previousSelectedMesh.material);
 
       } else {
         const priviousShape = this.inSceneShapes.find(item => item.id.toString() == this.previousSelectedMesh?.name);
         if (priviousShape) {
           (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(priviousShape.color);
+          
 
         }
         this.previousSelectedMesh = mesh;
@@ -161,7 +162,7 @@ export class SceneManagerService {
   deselectShape() {
     this.selectedShape = undefined;
     if (this.previousSelectedMesh) {
-      (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 0, 0));
+      (this.previousSelectedMesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color("rgb(255, 0, 0)"));
       
     }
     
