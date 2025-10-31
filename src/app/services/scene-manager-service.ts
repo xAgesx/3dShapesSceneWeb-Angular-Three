@@ -61,7 +61,7 @@ export class SceneManagerService {
         sizeShape =2;
         typeShape = type;
         geometry = new THREE.BoxGeometry(sizeShape, sizeShape, sizeShape);
-        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        material = new THREE.MeshStandardMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
         mesh = new THREE.Mesh(geometry, material);
         mesh.translateX(this.xOffset);
         break;
@@ -70,7 +70,7 @@ export class SceneManagerService {
         sizeShape = 1.5;
         typeShape = type;
         geometry = new THREE.SphereGeometry(sizeShape);
-        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        material = new THREE.MeshStandardMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
         mesh = new THREE.Mesh(geometry, material);
         mesh.translateX(this.xOffset);
         break;
@@ -79,7 +79,7 @@ export class SceneManagerService {
         sizeShape = 1.5;
         typeShape = type;
         geometry = new THREE.ConeGeometry(sizeShape);
-        material = new THREE.MeshBasicMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
+        material = new THREE.MeshStandardMaterial({ color: new THREE.Color("rgb(255, 0, 0)") })
         mesh = new THREE.Mesh(geometry, material);
         mesh.translateX(this.xOffset);
         break;
@@ -149,7 +149,7 @@ export class SceneManagerService {
 
       this.previousOriginalColor = (mesh.material as THREE.MeshStandardMaterial).color;
 
-      (mesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color(255, 234, 171));
+      (mesh.material as THREE.MeshStandardMaterial).color.set(new THREE.Color('rgba(255, 255, 255, 1)'));
     }
     console.log("previousShape : " +this.previousSelectedMesh);
 
